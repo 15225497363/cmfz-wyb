@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.baizhi.dao.MenuDao">
+    <resultMap id="menuResultMap" type="com.baizhi.entity.Menu">
+        <result column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="parent_id" property="parent_id"/>
+        <result column="iconCls" property="iconCls"/>
+        <result column="url" property="url"/>
+
+        <collection property="menuList" javaType="java.util.List" ofType="com.baizhi.entity.Menu">
+            <result column="mid" property="id"/>
+            <result column="mtitle" property="title"/>
+            <result column="mparent_id" property="parent_id"/>
+            <result column="miconCls" property="iconCls"/>
+            <result column="murl" property="url"/>
+        </collection>
+    </resultMap>
+    <!--1.查询自连接的结果-->
+    <select id="queryAll" resultMap="menuResultMap">
+		select m1.*,m2.id mid,m2.title mtitle,m2.parent_id mparent_id,m2.iconCls micoCls,m2.url murl
+		from menu m1 left join menu m2 on m1.id=m2.parent_id
+	</select>
+</mapper>
